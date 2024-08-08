@@ -8,7 +8,8 @@ namespace DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-        //IOrderHeaderRepository OrderHeader { get; }
+        IEmployeeRepository Employee { get; }
+        ILeaveRequestRepository LeaveRequest { get; }
 
         void Save();
     }
