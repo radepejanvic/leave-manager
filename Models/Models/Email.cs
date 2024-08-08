@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 
-namespace Core.Models
+namespace Models.Models
 {
     public class Email
     {
