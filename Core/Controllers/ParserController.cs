@@ -1,4 +1,3 @@
-using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using static System.Net.WebRequestMethods;
@@ -8,6 +7,7 @@ using Azure;
 using OpenAI.Chat;
 using Core.Services.IService;
 using Core.Services;
+using Models.Models;
 
 namespace Core.Controllers
 {
