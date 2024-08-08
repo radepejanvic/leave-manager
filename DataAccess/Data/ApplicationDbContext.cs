@@ -19,10 +19,12 @@ namespace DataAccess.Data
         }
 
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Entity<Employee>().HasData(
                 new Employee
                 {
@@ -48,7 +50,33 @@ namespace DataAccess.Data
                     Surname = "Aksentijevic",
                     Phone = "0631233999"
                 }
-                );
+            );
+
+            builder.Entity<LeaveRequest>().HasData(
+                new LeaveRequest
+                {
+                    Id = 1,
+                    EmployeeId = 3,
+                    Start = DateOnly.FromDateTime(DateTime.Now),
+                    End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)),
+                    Duration = 5
+                },
+                new LeaveRequest
+                {
+                    Id = 2,
+                    EmployeeId = 3,
+                    Start = DateOnly.FromDateTime(DateTime.Now.AddMonths(4)),
+                    End = DateOnly.FromDateTime(DateTime.Now.AddMonths(5)),
+                    Duration = 30
+                },
+                new LeaveRequest
+                {
+                    Id = 3,
+                    EmployeeId = 1,
+                    Start = DateOnly.FromDateTime(DateTime.Now),
+                    End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)), 
+                    Duration = 5
+                });
         }
 
     }
