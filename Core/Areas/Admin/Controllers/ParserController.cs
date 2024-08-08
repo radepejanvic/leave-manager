@@ -9,12 +9,13 @@ using Core.Services.IService;
 using Core.Services;
 using Models.Models;
 
-namespace Core.Controllers
+namespace Core.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ParserController : Controller
     {
         private readonly ILogger<ParserController> _logger;
-        private readonly IFileService _fileService; 
+        private readonly IFileService _fileService;
 
         private readonly string endpoint = GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
         private readonly string key = GetEnvironmentVariable("AZURE_OPENAI_KEY");
@@ -47,11 +48,11 @@ namespace Core.Controllers
                 ]);
 
             Console.WriteLine($"{completion.Role}: {completion.Content[0].Text}");
-            
+
 
             return Json(new
             {
-                Role = completion.Role.ToString(), 
+                Role = completion.Role.ToString(),
                 Response = completion.Content[0].Text
             });
         }
