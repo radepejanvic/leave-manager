@@ -42,7 +42,7 @@ function Delete(url) {
                 type: 'DELETE',
                 success: function (data) {
                     dataTable.ajax.reload();
-                    //toastr.success(data.message);
+                    toastr.success(data.message);
                 }
             })
         }
