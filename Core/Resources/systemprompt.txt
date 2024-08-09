@@ -5,9 +5,9 @@
 
 Please provide the output in the following JSON format:
 {
-    "email": "sender@example.com",
-    "start_date": "YYYY-MM-DD",
-    "end_date": "YYYY-MM-DD"
+    "EmployeeEmail": "sender@example.com",
+    "Start": "YYYY-MM-DD",
+    "End": "YYYY-MM-DD"
 }
 
 Consider the following examples:
@@ -18,9 +18,9 @@ Body: Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hv
 Sender: ana@example.com
 Expected Output:
 {
-    "email": "ana@example.com",
-    "start_date": "2024-08-01",
-    "end_date": "2024-08-05"
+    "EmployeeEmail": "ana@example.com",
+    "Start": "2024-08-01",
+    "End": "2024-08-05"
 }
 
 Example 2:
@@ -29,9 +29,9 @@ Body: Zdravo, neću moći da radim od 10.07.2024. do 15.07.2024. zbog putovanja.
 Sender: marko@example.com
 Expected Output:
 {
-    "email": "marko@example.com",
-    "start_date": "2024-07-10",
-    "end_date": "2024-07-15"
+    "EmployeeEmail": "marko@example.com",
+    "Start": "2024-07-10",
+    "End": "2024-07-15"
 }
 
 Example 3:
@@ -40,9 +40,9 @@ Body: Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razu
 Sender: jelena@example.com
 Expected Output:
 {
-    "email": "jelena@example.com",
-    "start_date": "2024-08-20",
-    "end_date": "2024-08-25"
+    "EmployeeEmail": "jelena@example.com",
+    "Start": "2024-08-20",
+    "End": "2024-08-25"
 }
 
 Example 4:
@@ -51,9 +51,9 @@ Body: Molim vas da zabeležite da ću biti na odmoru od 1. do 7. septembra. S po
 Sender: petar@example.com
 Expected Output:
 {
-    "email": "petar@example.com",
-    "start_date": "2024-09-01",
-    "end_date": "2024-09-07"
+    "EmployeeEmail": "petar@example.com",
+    "Start": "2024-09-01",
+    "End": "2024-09-07"
 }
 
 Example 5:
@@ -62,9 +62,9 @@ Body: Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. 
 Sender: ivana@example.com
 Expected Output:
 {
-    "email": "ivana@example.com",
-    "start_date": "2024-10-15",
-    "end_date": "2024-10-18"
+    "EmployeeEmail": "ivana@example.com",
+    "Start": "2024-10-15",
+    "End": "2024-10-18"
 }
 
 Example 6:
@@ -73,9 +73,9 @@ Body: Hej, neću biti prisutan na poslu od 5. novembra do 10. novembra. Molim va
 Sender: marko@example.com
 Expected Output:
 {
-    "email": "marko@example.com",
-    "start_date": "2024-11-05",
-    "end_date": "2024-11-10"
+    "EmployeeEmail": "marko@example.com",
+    "Start": "2024-11-05",
+    "End": "2024-11-10"
 }
 
 Example 7:
@@ -84,9 +84,9 @@ Body: Dragi kolege, biću na odmoru od 22.12.2024. do 30.12.2024. S poštovanjem
 Sender: ana@example.com
 Expected Output:
 {
-    "email": "ana@example.com",
-    "start_date": "2024-12-22",
-    "end_date": "2024-12-30"
+    "EmployeeEmail": "ana@example.com",
+    "Start": "2024-12-22",
+    "End": "2024-12-30"
 }
 
 Example 8:
@@ -95,9 +95,9 @@ Body: Zdravo, neću biti prisutan na poslu od 3. januara do 10. januara zbog bol
 Sender: milan@example.com
 Expected Output:
 {
-    "email": "milan@example.com",
-    "start_date": "2024-01-03",
-    "end_date": "2024-01-10"
+    "EmployeeEmail": "milan@example.com",
+    "Start": "2024-01-03",
+    "End": "2024-01-10"
 }
 
 Example 9:
@@ -106,9 +106,9 @@ Body: Poštovani, biću odsutan od 8. februara do 15. februara zbog službenog p
 Sender: tanja@example.com
 Expected Output:
 {
-    "email": "tanja@example.com",
-    "start_date": "2024-02-08",
-    "end_date": "2024-02-15"
+    "EmployeeEmail": "tanja@example.com",
+    "Start": "2024-02-08",
+    "End": "2024-02-15"
 }
 
 Example 10:
@@ -117,8 +117,8 @@ Body: Dragi tim, obaveštavam vas da ću biti na odmoru od 25.03.2024. do 30.03.
 Sender: jovan@example.com
 Expected Output:
 {
-    "email": "jovan@example.com",
-    "start_date": "2024-03-25",
-    "end_date": "2024-03-30"
+    "EmployeeEmail": "jovan@example.com",
+    "Start": "2024-03-25",
+    "End": "2024-03-30"
 }
 

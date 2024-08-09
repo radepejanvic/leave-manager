@@ -16,7 +16,7 @@ namespace Core.Areas.Admin.Controllers
     public class ParserController : Controller
     {
         private readonly ILogger<ParserController> _logger;
-        private readonly IFileService _fileService;
+        private readonly ILeaveRequestService _leaveRequestService;
 
         private readonly IUnitOfWork _unitOfWork;
 
@@ -24,11 +24,11 @@ namespace Core.Areas.Admin.Controllers
         private readonly string key = GetEnvironmentVariable("AZURE_OPENAI_KEY");
         private readonly string model = GetEnvironmentVariable("AZURE_OPENAI_MODEL");
 
-        public ParserController(ILogger<ParserController> logger, IFileService fileService, IUnitOfWork unitOfWork)
+        public ParserController(ILogger<ParserController> logger, IUnitOfWork unitOfWork, ILeaveRequestService leaveRequestService)
         {
             _logger = logger;
-            _fileService = fileService;
             _unitOfWork = unitOfWork;
+            _leaveRequestService = leaveRequestService;
         }
 
         public IActionResult Index()
@@ -36,37 +36,23 @@ namespace Core.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetResponse([FromBody] Email email)
-        {
-            AzureOpenAIClient azureClient = new(
-                new Uri(endpoint),
-                new AzureKeyCredential(key));
-
-            ChatClient chatClient = azureClient.GetChatClient(model);
-
-            ChatCompletion completion = chatClient.CompleteChat(
-                [
-                    new SystemChatMessage(_fileService.Read()),
-                    new UserChatMessage(email.ToString()),
-                ]);
-
-            Console.WriteLine($"{completion.Role}: {completion.Content[0].Text}");
-
-
-            return Json(new
-            {
-                Role = completion.Role.ToString(),
-                Response = completion.Content[0].Text
-            });
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetEmails()
         {
             return Json(new
             {
-                Emails = _unitOfWork.Email.GetUnreadMails()
+                Emails = _unitOfWork.Email.GetUnreadMailsAsync()
+            });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AIEmailIntegration()
+        {
+            await _leaveRequestService.ExtractLeaveRequestsAsync();
+            
+            return Json(new
+            {
+                Called = "AIEmailIntegration called"
             });
         }
 

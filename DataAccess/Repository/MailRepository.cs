@@ -28,7 +28,7 @@ namespace DataAccess.Repository
             _ssl = bool.Parse(GetEnvironmentVariable("SMTP_SSL"));
         }
 
-        public async Task<IEnumerable<Email>> GetUnreadMails()
+        public async Task<IEnumerable<Email>> GetUnreadMailsAsync()
         {
             var messages = new List<Email>();
 

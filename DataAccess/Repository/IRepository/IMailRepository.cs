@@ -9,6 +9,6 @@ namespace DataAccess.Repository.IRepository
 {
     public interface IMailRepository
     {
-        Task<IEnumerable<Email>> GetUnreadMails();
+        Task<IEnumerable<Email>> GetUnreadMailsAsync();
     }
 }
