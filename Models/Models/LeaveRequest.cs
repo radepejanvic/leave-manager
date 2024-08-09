@@ -12,8 +12,8 @@ namespace Models.Models
     {
         [Key]
         public int Id { get; set; }
-        public int EmployeeId { get; set; }
-        [ForeignKey("EmployeeId")]
+        public string EmployeeEmail { get; set; }
+        [ForeignKey("EmployeeEmail")]
         public Employee Employee { get; set; }
         [Required]
         public DateOnly Start { get; set; }

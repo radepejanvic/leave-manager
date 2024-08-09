@@ -28,7 +28,6 @@ namespace DataAccess.Data
             builder.Entity<Employee>().HasData(
                 new Employee
                 {
-                    Id = 1,
                     Email = "marko@example.com",
                     Name = "Marko",
                     Surname = "Markovic",
@@ -36,7 +35,6 @@ namespace DataAccess.Data
                 },
                 new Employee
                 {
-                    Id = 2,
                     Email = "milan@example.com",
                     Name = "Milan",
                     Surname = "Mladenovic",
@@ -44,11 +42,17 @@ namespace DataAccess.Data
                 },
                 new Employee
                 {
-                    Id = 3,
                     Email = "ajs@nigucci.com",
                     Name = "Vladan",
                     Surname = "Aksentijevic",
                     Phone = "0631233999"
+                },
+                new Employee
+                {
+                    Email = "radefaks@gmail.com",
+                    Name = "Rade",
+                    Surname = "Pejanovic",
+                    Phone = "0631235999"
                 }
             );
 
@@ -56,7 +60,7 @@ namespace DataAccess.Data
                 new LeaveRequest
                 {
                     Id = 1,
-                    EmployeeId = 3,
+                    EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
                     End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)),
                     Duration = 5
@@ -64,7 +68,7 @@ namespace DataAccess.Data
                 new LeaveRequest
                 {
                     Id = 2,
-                    EmployeeId = 3,
+                    EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now.AddMonths(4)),
                     End = DateOnly.FromDateTime(DateTime.Now.AddMonths(5)),
                     Duration = 30
@@ -72,7 +76,7 @@ namespace DataAccess.Data
                 new LeaveRequest
                 {
                     Id = 3,
-                    EmployeeId = 1,
+                    EmployeeEmail = "milan@example.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
                     End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)), 
                     Duration = 5
