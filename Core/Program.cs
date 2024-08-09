@@ -17,9 +17,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
-builder.Services.AddScoped<IFileService, FileService>();
+//builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+//builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
+builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 
 var app = builder.Build();
 
