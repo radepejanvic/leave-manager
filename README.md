@@ -1,7 +1,6 @@
 # Email Parser
-
 Expected NuGet Packages
-```.NET CLI
+```shell
 # Core packages
 dotnet add Core package Azure.AI.OpenAI --prerelease
 dotnet add Core package DotNetEnv
@@ -13,15 +12,15 @@ dotnet add DataAccess package Microsoft.EntityFrameworkCore
 dotnet add DataAccess package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add DataAccess package Microsoft.EntityFrameworkCore.Tools
 ```
-Expected environment variables
-```powershell
-AZURE_OPENAI_ENDPOINT=https://novahiringai.openai.azure.com/
-AZURE_OPENAI_KEY=df98d1eebad2479cbd45a4e637c726fb
-AZURE_OPENAI_MODEL=EmailParser
-SYSTEM_PROMPT_FILE=Resources/systemprompt.txt
+Expected `.env` variables
+```txt
+AZURE_OPENAI_ENDPOINT=<https://example.openai.azure.com/>
+AZURE_OPENAI_KEY=<key>
+AZURE_OPENAI_MODEL=<model name>
+SYSTEM_PROMPT_FILE=<path>
 SMTP_HOST=imap.gmail.com
 SMTP_PORT=993
-SMTP_USERNAME=radepraksa@gmail.com
-SMTP_PASSWORD=drsq hsez jncj mtnt
+SMTP_USERNAME=<example@gmail.com>
+SMTP_PASSWORD=<password>
 SMTP_SSL=true
 ```
