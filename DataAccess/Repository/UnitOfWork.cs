@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repository.IRepository;
+using MailKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,14 @@ namespace DataAccess.Repository
         private readonly ApplicationDbContext _db;
         public IEmployeeRepository Employee { get; private set; }
         public ILeaveRequestRepository LeaveRequest { get; private set; }
+        public IMailRepository Email { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Employee = new EmployeeRepository(_db);
             LeaveRequest = new LeaveRequestRepository(_db);
+            Email = new MailRepository();
         }
 
 
