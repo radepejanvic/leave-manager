@@ -10,6 +10,7 @@ namespace DataAccess.Repository.IRepository
     {
         IEmployeeRepository Employee { get; }
         ILeaveRequestRepository LeaveRequest { get; }
+        IMailRepository Email { get; }
 
         void Save();
     }
