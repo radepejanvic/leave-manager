@@ -38,25 +38,35 @@ namespace Core.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(LeaveRequest leaveRequest)
         {
-            if (ModelState.IsValid)
-            {
-                if (leaveRequest.Id == 0)
-                {
-                    _unitOfWork.LeaveRequest.Add(leaveRequest);
-                }
-                else
-                {
-                    _unitOfWork.LeaveRequest.Update(leaveRequest);
-                }
-
-                _unitOfWork.Save();
-                TempData["success"] = "Leave Request upserted successfully.";
-                return RedirectToAction("Index");
-            }
-            else
+            if (!ModelState.IsValid)
             {
                 return View(leaveRequest);
             }
+
+            var existingLeaveRequest = _unitOfWork.LeaveRequest
+                .Get(u => u.EmployeeEmail == leaveRequest.EmployeeEmail &&
+                u.Id != leaveRequest.Id && 
+                ((u.Start >= leaveRequest.Start && u.Start <= leaveRequest.End) ||
+                (u.End >= leaveRequest.Start && u.End <= leaveRequest.End))
+                );
+
+            if (existingLeaveRequest != null) { 
+                TempData["error"] = "Leave Request overlaps with the existing one.";
+                return View(leaveRequest);
+            }
+
+            if (leaveRequest.Id == 0)
+            {
+                _unitOfWork.LeaveRequest.Add(leaveRequest);
+            }
+            else
+            {
+                _unitOfWork.LeaveRequest.Update(leaveRequest);
+            }
+
+            _unitOfWork.Save();
+            TempData["success"] = "Leave Request upserted successfully.";
+            return RedirectToAction("Index");
         }
 
         #region API CALLS
