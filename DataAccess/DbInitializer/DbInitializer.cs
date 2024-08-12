@@ -29,7 +29,6 @@ namespace DataAccess.DbInitializer
 
         public void Initialize()
         {
-            // migrations if they are not applied
             try
             {
                 if (_db.Database.GetPendingMigrations().Count() > 0)
@@ -42,23 +41,23 @@ namespace DataAccess.DbInitializer
                 Console.WriteLine($"Error during DbInitialization: {e}");
             }
 
-            // create roles if they are not created
             if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
             {
               
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
 
-                // if roles are not created, then we will create admin user as well
-                _userManager.CreateAsync(new IdentityUser
-                {
-                    Email = GetEnvironmentVariable("ADMIN_EMAIL"),
-                }, GetEnvironmentVariable("ADMIN_PASSWORD")).GetAwaiter().GetResult();
 
-                IdentityUser? user = _db.Users.FirstOrDefault(u => u.Email == GetEnvironmentVariable("ADMIN_EMAIL"));
-                if (user != null)
+                var email = GetEnvironmentVariable("ADMIN_EMAIL");
+                var password = GetEnvironmentVariable("ADMIN_PASSWORD");
+
+                var result = _userManager.CreateAsync(new IdentityUser
                 {
-                    _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
-                } 
+                    Email = email,
+                    UserName = email,
+                }, password).GetAwaiter().GetResult();
+
+                IdentityUser user = _db.Users.FirstOrDefault(u => u.Email == GetEnvironmentVariable("ADMIN_EMAIL"));
+                _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
             }
         }
     }
