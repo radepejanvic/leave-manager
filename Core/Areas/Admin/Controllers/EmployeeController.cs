@@ -1,13 +1,16 @@
 ﻿using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
 using Org.BouncyCastle.Crypto.Prng.Drbg;
 using System.Net.NetworkInformation;
+using Utils;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Core.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;

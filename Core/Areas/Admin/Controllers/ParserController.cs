@@ -41,7 +41,7 @@ namespace Core.Areas.Admin.Controllers
         {
             return Json(new
             {
-                Emails = _unitOfWork.Email.GetUnreadMailsAsync()
+                Emails = _unitOfWork.Email.PollUnreadMailsAsync()
             });
         }
 

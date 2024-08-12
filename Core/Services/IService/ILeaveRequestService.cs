@@ -2,6 +2,6 @@
 {
     public interface ILeaveRequestService
     {
-        Task ExtractLeaveRequestsAsync();
+        Task<int> ExtractLeaveRequestsAsync();
     }
 }

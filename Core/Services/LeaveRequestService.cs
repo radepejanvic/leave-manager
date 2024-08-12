@@ -8,25 +8,30 @@ using static System.Environment;
 using System.Text;
 using Models.Models;
 using System.Text.Json;
+using Utils;
 
 namespace Core.Services
 {
     public class LeaveRequestService : ILeaveRequestService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPeriodicTaskService _periodicTaskService;
         private readonly ChatClient _chatClient;
         private readonly SystemChatMessage _systemPrompt;
 
-        public LeaveRequestService(IUnitOfWork unitOfWork)
+        public LeaveRequestService(IUnitOfWork unitOfWork, IPeriodicTaskService periodicTaskService)
         {
             _unitOfWork = unitOfWork;
             _chatClient = CreateClient();
             _systemPrompt = CreateSystemPrompt();
+            _periodicTaskService = periodicTaskService;
         }
 
-        public async Task ExtractLeaveRequestsAsync()
+        public async Task<int> ExtractLeaveRequestsAsync()
         {
-            foreach (var email in await _unitOfWork.Email.GetUnreadMailsAsync())
+            var emails = await _unitOfWork.Email.PollUnreadMailsAsync();
+
+            foreach (var email in emails)
             {
                 ChatCompletion completion = _chatClient.CompleteChat(
                     [
@@ -38,6 +43,8 @@ namespace Core.Services
                 _unitOfWork.LeaveRequest.Add(JsonSerializer.Deserialize<LeaveRequest>(jsonString));
             }
             _unitOfWork.Save();
+
+            return emails.Count();
         }
 
         private ChatClient CreateClient()

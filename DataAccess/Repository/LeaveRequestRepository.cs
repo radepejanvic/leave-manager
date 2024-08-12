@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace DataAccess.Repository
 {
@@ -17,10 +18,17 @@ namespace DataAccess.Repository
         {
             _db = db;
         }
+        public override void Add(LeaveRequest request) 
+        {
+            request.Duration = DateHelper.GetWorkdaysBetween(request.Start, request.End);
+            _db.LeaveRequests.Add(request);
+        }
 
         public void Update(LeaveRequest request)
         {
+            request.Duration = DateHelper.GetWorkdaysBetween(request.Start, request.End);
             _db.LeaveRequests.Update(request);
         }
+
     }
 }
