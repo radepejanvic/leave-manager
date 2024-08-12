@@ -22,7 +22,7 @@ namespace DataAccess.Repository
             //_db.Products.Include(u => u.Category);
         }
 
-        public void Add(T entity)
+        public virtual void Add(T entity)
         {
             dbSet.Add(entity);
         }

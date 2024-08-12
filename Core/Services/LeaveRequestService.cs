@@ -15,14 +15,16 @@ namespace Core.Services
     public class LeaveRequestService : ILeaveRequestService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPeriodicTaskService _periodicTaskService;
         private readonly ChatClient _chatClient;
         private readonly SystemChatMessage _systemPrompt;
 
-        public LeaveRequestService(IUnitOfWork unitOfWork)
+        public LeaveRequestService(IUnitOfWork unitOfWork, IPeriodicTaskService periodicTaskService)
         {
             _unitOfWork = unitOfWork;
             _chatClient = CreateClient();
             _systemPrompt = CreateSystemPrompt();
+            _periodicTaskService = periodicTaskService;
         }
 
         public async Task<int> ExtractLeaveRequestsAsync()

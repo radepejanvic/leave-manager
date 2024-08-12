@@ -63,7 +63,7 @@ namespace DataAccess.Data
                     EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
                     End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)),
-                    Duration = 5
+                    Duration = 4
                 },
                 new LeaveRequest
                 {
@@ -71,7 +71,7 @@ namespace DataAccess.Data
                     EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now.AddMonths(4)),
                     End = DateOnly.FromDateTime(DateTime.Now.AddMonths(5)),
-                    Duration = 30
+                    Duration = 24
                 },
                 new LeaveRequest
                 {
@@ -79,7 +79,7 @@ namespace DataAccess.Data
                     EmployeeEmail = "milan@example.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
                     End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)), 
-                    Duration = 5
+                    Duration = 4
                 });
         }
 
