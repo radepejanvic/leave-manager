@@ -1,11 +1,14 @@
 ﻿using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
+using Utils;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Core.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class LeaveRequestController : Controller
     {
         private readonly ILogger<LeaveRequestController> _logger;

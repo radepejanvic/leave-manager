@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
+using static System.Environment;
 
 namespace DataAccess.DbInitializer
 {
@@ -40,32 +42,24 @@ namespace DataAccess.DbInitializer
                 Console.WriteLine($"Error during DbInitialization: {e}");
             }
 
-            //// create roles if they are not created
-            //if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
-            //{
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Company)).GetAwaiter().GetResult();
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-            //    _roleManager.CreateAsync(new IdentityRole(SD.Role_Employee)).GetAwaiter().GetResult();
+            // create roles if they are not created
+            if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
+            {
+              
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
 
-            //// if roles are not created, then we will create admin user as well
-            //    _userManager.CreateAsync(new ApplicationUser
-            //    {
-            //        UserName = "admin@dotnetmastery.com",
-            //        Email = "admin@dotnetmastery.com",
-            //        Name = "Bhrugen Patel",
-            //        PhoneNumber = "1112223333",
-            //        StreetAddress = "test 123 Ave",
-            //        State = "IL",
-            //        PostalCode = "23422",
-            //        City = "Chicago"
-            //    }, "Admin123#").GetAwaiter().GetResult();
+                // if roles are not created, then we will create admin user as well
+                _userManager.CreateAsync(new IdentityUser
+                {
+                    Email = GetEnvironmentVariable("ADMIN_EMAIL"),
+                }, GetEnvironmentVariable("ADMIN_PASSWORD")).GetAwaiter().GetResult();
 
-            //    ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@dotnetmastery.com");
-            //    _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
-
-            //}
-
+                IdentityUser? user = _db.Users.FirstOrDefault(u => u.Email == GetEnvironmentVariable("ADMIN_EMAIL"));
+                if (user != null)
+                {
+                    _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
+                } 
+            }
         }
     }
 }
