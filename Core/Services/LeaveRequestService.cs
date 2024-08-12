@@ -8,6 +8,7 @@ using static System.Environment;
 using System.Text;
 using Models.Models;
 using System.Text.Json;
+using Utils;
 
 namespace Core.Services
 {
@@ -24,9 +25,11 @@ namespace Core.Services
             _systemPrompt = CreateSystemPrompt();
         }
 
-        public async Task ExtractLeaveRequestsAsync()
+        public async Task<int> ExtractLeaveRequestsAsync()
         {
-            foreach (var email in await _unitOfWork.Email.GetUnreadMailsAsync())
+            var emails = await _unitOfWork.Email.GetUnreadMailsAsync();
+
+            foreach (var email in emails)
             {
                 ChatCompletion completion = _chatClient.CompleteChat(
                     [
@@ -38,6 +41,8 @@ namespace Core.Services
                 _unitOfWork.LeaveRequest.Add(JsonSerializer.Deserialize<LeaveRequest>(jsonString));
             }
             _unitOfWork.Save();
+
+            return emails.Count();
         }
 
         private ChatClient CreateClient()
