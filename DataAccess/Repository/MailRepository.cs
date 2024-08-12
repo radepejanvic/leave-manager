@@ -10,6 +10,8 @@ using MailKit.Net.Imap;
 using static System.Environment;
 using System.Runtime.InteropServices.JavaScript;
 using Models.Models;
+using System.Threading;
+using MimeKit.Tnef;
 
 namespace DataAccess.Repository
 {
@@ -18,6 +20,7 @@ namespace DataAccess.Repository
         private readonly string _host, _username, _password;
         private readonly int _port;
         private readonly bool _ssl;
+        private readonly ImapClient _client;
 
         public MailRepository()
         {
@@ -26,21 +29,22 @@ namespace DataAccess.Repository
             _username = GetEnvironmentVariable("SMTP_USERNAME");
             _password = GetEnvironmentVariable("SMTP_PASSWORD");
             _ssl = bool.Parse(GetEnvironmentVariable("SMTP_SSL"));
+            _client = new ImapClient();
         }
 
-        public async Task<IEnumerable<Email>> GetUnreadMailsAsync()
+        public async Task<IEnumerable<Email>> PollUnreadMailsAsync()
         {
             var messages = new List<Email>();
 
-            using (var client = new ImapClient())
+            using (_client)
             {
-                await client.ConnectAsync(_host, _port, _ssl);
+                await _client.ConnectAsync(_host, _port, _ssl);
 
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
+                _client.AuthenticationMechanisms.Remove("XOAUTH2");
 
-                await client.AuthenticateAsync(_username, _password);
+                await _client.AuthenticateAsync(_username, _password);
 
-                var inbox = client.Inbox;
+                var inbox = _client.Inbox;
                 await inbox.OpenAsync(FolderAccess.ReadWrite);
                 var results = inbox.Search(SearchOptions.All, SearchQuery.Not(SearchQuery.Seen));
                 foreach (var uid in results.UniqueIds)
@@ -56,8 +60,7 @@ namespace DataAccess.Repository
 
                     await inbox.AddFlagsAsync(uid, MessageFlags.Seen, true);
                 }
-
-                client.Disconnect(true);
+                _client.Disconnect(true);
             }
 
             return messages;

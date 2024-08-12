@@ -27,7 +27,7 @@ namespace Core.Services
 
         public async Task<int> ExtractLeaveRequestsAsync()
         {
-            var emails = await _unitOfWork.Email.GetUnreadMailsAsync();
+            var emails = await _unitOfWork.Email.PollUnreadMailsAsync();
 
             foreach (var email in emails)
             {
