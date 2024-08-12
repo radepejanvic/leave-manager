@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,8 +15,10 @@ namespace Models.Models
         public int Id { get; set; }
         public string EmployeeEmail { get; set; }
         [ForeignKey("EmployeeEmail")]
+        [ValidateNever]
         public Employee Employee { get; set; }
         [Required]
+        [DateRange("End")]
         public DateOnly Start { get; set; }
         [Required]
         public DateOnly End { get; set; }
