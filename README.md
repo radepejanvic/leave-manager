@@ -23,4 +23,7 @@ SMTP_PORT=993
 SMTP_USERNAME=<example@gmail.com>
 SMTP_PASSWORD=<password>
 SMTP_SSL=true
+ADMIN_EMAIL=<example@example.com>
+ADMIN_PASSWORD=<password>
+POLLING_DELAY=<time in millis>
 ```
