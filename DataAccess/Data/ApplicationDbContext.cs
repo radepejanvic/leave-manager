@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace DataAccess.Data
 {
@@ -15,7 +16,7 @@ namespace DataAccess.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Employee> Employees { get; set; }
@@ -63,7 +64,9 @@ namespace DataAccess.Data
                     EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
                     End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)),
-                    Duration = 4
+                    Duration = 4,
+                    Reason = "Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hvala, Ajs.",
+                    Type = SD.Vacation
                 },
                 new LeaveRequest
                 {
@@ -71,15 +74,19 @@ namespace DataAccess.Data
                     EmployeeEmail = "ajs@nigucci.com",
                     Start = DateOnly.FromDateTime(DateTime.Now.AddMonths(4)),
                     End = DateOnly.FromDateTime(DateTime.Now.AddMonths(5)),
-                    Duration = 24
+                    Duration = 24,
+                    Reason = "Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razumevanju. Ajs.",
+                    Type = SD.SickLeave
                 },
                 new LeaveRequest
                 {
                     Id = 3,
                     EmployeeEmail = "milan@example.com",
                     Start = DateOnly.FromDateTime(DateTime.Now),
-                    End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)), 
-                    Duration = 4
+                    End = DateOnly.FromDateTime(DateTime.Now.AddDays(5)),
+                    Duration = 4,
+                    Reason = "Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. Hvala, Milan.",
+                    Type = SD.Vacation
                 });
         }
 

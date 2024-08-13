@@ -167,12 +167,10 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -209,12 +207,10 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -294,8 +290,16 @@ namespace DataAccess.Migrations
                     b.Property<DateOnly>("End")
                         .HasColumnType("date");
 
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("Start")
                         .HasColumnType("date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -307,26 +311,32 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Duration = 5,
+                            Duration = 4,
                             EmployeeEmail = "ajs@nigucci.com",
-                            End = new DateOnly(2024, 8, 14),
-                            Start = new DateOnly(2024, 8, 9)
+                            End = new DateOnly(2024, 8, 18),
+                            Reason = "Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hvala, Ajs.",
+                            Start = new DateOnly(2024, 8, 13),
+                            Type = "Vacation"
                         },
                         new
                         {
                             Id = 2,
-                            Duration = 30,
+                            Duration = 24,
                             EmployeeEmail = "ajs@nigucci.com",
-                            End = new DateOnly(2025, 1, 9),
-                            Start = new DateOnly(2024, 12, 9)
+                            End = new DateOnly(2025, 1, 13),
+                            Reason = "Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razumevanju. Ajs.",
+                            Start = new DateOnly(2024, 12, 13),
+                            Type = "Sick Leave"
                         },
                         new
                         {
                             Id = 3,
-                            Duration = 5,
+                            Duration = 4,
                             EmployeeEmail = "milan@example.com",
-                            End = new DateOnly(2024, 8, 14),
-                            Start = new DateOnly(2024, 8, 9)
+                            End = new DateOnly(2024, 8, 18),
+                            Reason = "Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. Hvala, Milan.",
+                            Start = new DateOnly(2024, 8, 13),
+                            Type = "Vacation"
                         });
                 });
 

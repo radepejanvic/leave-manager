@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddEmployeeTable : Migration
+    public partial class InitDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -56,16 +56,14 @@ namespace DataAccess.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,8 +112,8 @@ namespace DataAccess.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -159,8 +157,8 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -174,14 +172,49 @@ namespace DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LeaveRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeEmail = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Start = table.Column<DateOnly>(type: "date", nullable: false),
+                    End = table.Column<DateOnly>(type: "date", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeaveRequests_Employees_EmployeeEmail",
+                        column: x => x.EmployeeEmail,
+                        principalTable: "Employees",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "Id", "Email", "Name", "Phone", "Surname" },
+                columns: new[] { "Email", "Name", "Phone", "Surname" },
                 values: new object[,]
                 {
-                    { 1, "marko@example.com", "Marko", "0631239999", "Markovic" },
-                    { 2, "milan@example.com", "Milan", "0631234999", "Mladenovic" },
-                    { 3, "ajs@nigucci.com", "Vladan", "0631233999", "Aksentijevic" }
+                    { "ajs@nigucci.com", "Vladan", "0631233999", "Aksentijevic" },
+                    { "marko@example.com", "Marko", "0631239999", "Markovic" },
+                    { "milan@example.com", "Milan", "0631234999", "Mladenovic" },
+                    { "radefaks@gmail.com", "Rade", "0631235999", "Pejanovic" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "LeaveRequests",
+                columns: new[] { "Id", "Duration", "EmployeeEmail", "End", "Reason", "Start", "Type" },
+                values: new object[,]
+                {
+                    { 1, 4, "ajs@nigucci.com", new DateOnly(2024, 8, 18), "Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hvala, Ajs.", new DateOnly(2024, 8, 13), "Vacation" },
+                    { 2, 24, "ajs@nigucci.com", new DateOnly(2025, 1, 13), "Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razumevanju. Ajs.", new DateOnly(2024, 12, 13), "Sick Leave" },
+                    { 3, 4, "milan@example.com", new DateOnly(2024, 8, 18), "Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. Hvala, Milan.", new DateOnly(2024, 8, 13), "Vacation" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -222,6 +255,11 @@ namespace DataAccess.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaveRequests_EmployeeEmail",
+                table: "LeaveRequests",
+                column: "EmployeeEmail");
         }
 
         /// <inheritdoc />
@@ -243,13 +281,16 @@ namespace DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "LeaveRequests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
         }
     }
 }
