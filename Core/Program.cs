@@ -26,7 +26,6 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-builder.Services.AddSingleton<IPeriodicTaskService, PeriodicTaskService>();
 
 var app = builder.Build();
 
