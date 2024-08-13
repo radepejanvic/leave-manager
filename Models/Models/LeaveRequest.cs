@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Models.Models
 {
+
     public class LeaveRequest
     {
         [Key]
@@ -23,5 +24,7 @@ namespace Models.Models
         [Required]
         public DateOnly End { get; set; }
         public int Duration { get; set; }
+        public string Reason { get; set; }
+        public string Type { get; set; }
     }
 }

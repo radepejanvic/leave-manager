@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240808140359_AddLeaveRequestTable")]
-    partial class AddLeaveRequestTable
+    [Migration("20240813124015_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,12 +170,10 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -212,12 +210,10 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -227,17 +223,10 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Models.Employee", b =>
+            modelBuilder.Entity("Models.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -251,14 +240,13 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Email");
 
                     b.ToTable("Employees");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
                             Email = "marko@example.com",
                             Name = "Marko",
                             Phone = "0631239999",
@@ -266,7 +254,6 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 2,
                             Email = "milan@example.com",
                             Name = "Milan",
                             Phone = "0631234999",
@@ -274,15 +261,21 @@ namespace DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 3,
                             Email = "ajs@nigucci.com",
                             Name = "Vladan",
                             Phone = "0631233999",
                             Surname = "Aksentijevic"
+                        },
+                        new
+                        {
+                            Email = "radefaks@gmail.com",
+                            Name = "Rade",
+                            Phone = "0631235999",
+                            Surname = "Pejanovic"
                         });
                 });
 
-            modelBuilder.Entity("Models.LeaveRequest", b =>
+            modelBuilder.Entity("Models.Models.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -293,18 +286,27 @@ namespace DataAccess.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("EmployeeEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("End")
                         .HasColumnType("date");
 
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateOnly>("Start")
                         .HasColumnType("date");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeEmail");
 
                     b.ToTable("LeaveRequests");
 
@@ -312,26 +314,32 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Duration = 5,
-                            EmployeeId = 3,
-                            End = new DateOnly(2024, 8, 13),
-                            Start = new DateOnly(2024, 8, 8)
+                            Duration = 4,
+                            EmployeeEmail = "ajs@nigucci.com",
+                            End = new DateOnly(2024, 8, 18),
+                            Reason = "Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hvala, Ajs.",
+                            Start = new DateOnly(2024, 8, 13),
+                            Type = "Vacation"
                         },
                         new
                         {
                             Id = 2,
-                            Duration = 30,
-                            EmployeeId = 3,
-                            End = new DateOnly(2025, 1, 8),
-                            Start = new DateOnly(2024, 12, 8)
+                            Duration = 24,
+                            EmployeeEmail = "ajs@nigucci.com",
+                            End = new DateOnly(2025, 1, 13),
+                            Reason = "Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razumevanju. Ajs.",
+                            Start = new DateOnly(2024, 12, 13),
+                            Type = "Sick Leave"
                         },
                         new
                         {
                             Id = 3,
-                            Duration = 5,
-                            EmployeeId = 1,
-                            End = new DateOnly(2024, 8, 13),
-                            Start = new DateOnly(2024, 8, 8)
+                            Duration = 4,
+                            EmployeeEmail = "milan@example.com",
+                            End = new DateOnly(2024, 8, 18),
+                            Reason = "Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. Hvala, Milan.",
+                            Start = new DateOnly(2024, 8, 13),
+                            Type = "Vacation"
                         });
                 });
 
@@ -386,11 +394,11 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.LeaveRequest", b =>
+            modelBuilder.Entity("Models.Models.LeaveRequest", b =>
                 {
-                    b.HasOne("Models.Employee", "Employee")
+                    b.HasOne("Models.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("EmployeeEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
