@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models;
+using Models.ViewModels;
 using Org.BouncyCastle.Crypto.Prng.Drbg;
 using System.Net.NetworkInformation;
 using Utils;
@@ -29,30 +30,30 @@ namespace Core.Areas.Admin.Controllers
 
         public IActionResult Upsert(string? email)
         {
+            var employeeVM = new EmployeeVM();
 
             if (string.IsNullOrEmpty(email))
             {
-                return View(new Employee() { Action = CRUDAction.ADD });
-
+                employeeVM.Employee = new Employee() { Action = CRUDAction.ADD };
+                return View(employeeVM);
             }
             else
             {
-                Employee employee = _unitOfWork.Employee.Get(u => u.Email == email);
-                employee.Action = CRUDAction.UPDATE;
-
-                return View(employee);
+                employeeVM.Employee = _unitOfWork.Employee.Get(u => u.Email == email);
+                employeeVM.Employee.Action = CRUDAction.UPDATE;
+                employeeVM.TotalVacationDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == email && u.Type == SD.Vacation).Sum(u => u.Duration);
+                employeeVM.TotalRemoteDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == email && u.Type == SD.Remote).Sum(u => u.Duration);
+                employeeVM.TotalSickDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == email && u.Type == SD.SickLeave).Sum(u => u.Duration);
+                return View(employeeVM);
             }
         }
 
         [HttpPost]
-        public IActionResult Upsert(Employee employee)
+        public IActionResult Upsert(EmployeeVM employeeVM)
         {
-            var modelState = ModelState;
-            Console.WriteLine($"Errors: {ModelState.ErrorCount}");
-            Console.WriteLine($"Errors: {ModelState}");
+            var employee = employeeVM.Employee;
             if (ModelState.IsValid)
             {
-
                 if (employee.Action == CRUDAction.ADD)
                 {
                     _unitOfWork.Employee.Add(employee);
@@ -68,7 +69,7 @@ namespace Core.Areas.Admin.Controllers
             }
             else
             {
-                return View(employee);
+                return View(employeeVM);
             }
         }
 
