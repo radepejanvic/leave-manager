@@ -2,13 +2,21 @@
 1. The email address of the sender.
 2. The start date of the leave.
 3. The end date of the leave.
+4. The type of leave.
 
 Please provide the output in the following JSON format:
 {
     "EmployeeEmail": "sender@example.com",
     "Start": "YYYY-MM-DD",
-    "End": "YYYY-MM-DD"
+    "End": "YYYY-MM-DD", 
+    "Reason": "email body...",
+    "Type": "TYPE_OF_LEAVE"
 }
+
+Possible values for Type are: 
+1. Vacation - This leave type refers to planned time off from work, typically for leisure, travel, or personal enjoyment. It is often scheduled in advance and is used by employees to recharge and take a break from their regular work duties.
+2. Remote - This leave type indicates that an employee will be working from a location other than their usual workplace, such as from home. It involves continuing work duties but not being physically present at the office or regular work site. Remote work is often used for situations where commuting is impractical or for special work arrangements.
+3. Sick Leave - This leave type is used when an employee is unable to work due to illness or medical reasons. It is generally unplanned and taken on short notice. Sick leave is meant for recovery from health issues and is typically supported by a medical certificate or documentation.
 
 Consider the following examples:
 
@@ -20,7 +28,9 @@ Expected Output:
 {
     "EmployeeEmail": "ana@example.com",
     "Start": "2024-08-01",
-    "End": "2024-08-05"
+    "End": "2024-08-05", 
+    "Reason": "Poštovani, biću odsutan od 1. do 5. avgusta zbog porodičnih obaveza. Hvala, Ana.",
+    "Type": "Vacation"
 }
 
 Example 2:
@@ -31,7 +41,9 @@ Expected Output:
 {
     "EmployeeEmail": "marko@example.com",
     "Start": "2024-07-10",
-    "End": "2024-07-15"
+    "End": "2024-07-15", 
+    "Reason": "Zdravo, neću moći da radim od 10.07.2024. do 15.07.2024. zbog putovanja. Pozdrav, Marko.",
+    "Type": "Vacation"
 }
 
 Example 3:
@@ -42,7 +54,9 @@ Expected Output:
 {
     "EmployeeEmail": "jelena@example.com",
     "Start": "2024-08-20",
-    "End": "2024-08-25"
+    "End": "2024-08-25", 
+    "Reason": "Dragi tim, biću na bolovanju od 20. avgusta do 25. avgusta. Hvala na razumevanju. Jelena.",
+    "Type": "Sick Leave"
 }
 
 Example 4:
@@ -53,7 +67,9 @@ Expected Output:
 {
     "EmployeeEmail": "petar@example.com",
     "Start": "2024-09-01",
-    "End": "2024-09-07"
+    "End": "2024-09-07", 
+    "Reason": "Molim vas da zabeležite da ću biti na odmoru od 1. do 7. septembra. S poštovanjem, Petar.",
+    "Type": "Vacation"
 }
 
 Example 5:
@@ -64,7 +80,9 @@ Expected Output:
 {
     "EmployeeEmail": "ivana@example.com",
     "Start": "2024-10-15",
-    "End": "2024-10-18"
+    "End": "2024-10-18",
+    "Reason": "Pozdrav, biću odsutan zbog ličnih razloga od 15.10.2024. do 18.10.2024. Hvala, Ivana.",
+    "Type": "Vacation"
 }
 
 Example 6:
@@ -75,7 +93,9 @@ Expected Output:
 {
     "EmployeeEmail": "marko@example.com",
     "Start": "2024-11-05",
-    "End": "2024-11-10"
+    "End": "2024-11-10", 
+    "Reason": "Hej, neću biti prisutan na poslu od 5. novembra do 10. novembra. Molim vas da obavestite tim. Marko.",
+    "Type": "Remote"
 }
 
 Example 7:
@@ -86,7 +106,9 @@ Expected Output:
 {
     "EmployeeEmail": "ana@example.com",
     "Start": "2024-12-22",
-    "End": "2024-12-30"
+    "End": "2024-12-30", 
+    "Reason": "Dragi kolege, biću na odmoru od 22.12.2024. do 30.12.2024. S poštovanjem, Ana.",
+    "Type": "Vacation"
 }
 
 Example 8:
@@ -97,7 +119,9 @@ Expected Output:
 {
     "EmployeeEmail": "milan@example.com",
     "Start": "2024-01-03",
-    "End": "2024-01-10"
+    "End": "2024-01-10", 
+    "Reason": "Zdravo, neću biti prisutan na poslu od 3. januara do 10. januara zbog bolesti. Pozdrav, Milan.",
+    "Type": "Sick Leave"
 }
 
 Example 9:
@@ -108,7 +132,9 @@ Expected Output:
 {
     "EmployeeEmail": "tanja@example.com",
     "Start": "2024-02-08",
-    "End": "2024-02-15"
+    "End": "2024-02-15", 
+    "Reason": "Poštovani, biću odsutan od 8. februara do 15. februara zbog službenog puta. Hvala, Tanja.",
+    "Type": "Remote"
 }
 
 Example 10:
@@ -119,6 +145,8 @@ Expected Output:
 {
     "EmployeeEmail": "jovan@example.com",
     "Start": "2024-03-25",
-    "End": "2024-03-30"
+    "End": "2024-03-30", 
+    "Reason": "Dragi tim, obaveštavam vas da ću biti na odmoru od 25.03.2024. do 30.03.2024. Hvala, Jovan.",
+    "Type": "Vacation"
 }
 
