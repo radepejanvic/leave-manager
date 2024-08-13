@@ -1,6 +1,7 @@
 ﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Models.Models;
 using Models.ViewModels;
 using Org.BouncyCastle.Crypto.Prng.Drbg;
@@ -77,7 +78,15 @@ namespace Core.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Employee> employees = _unitOfWork.Employee.GetAll().ToList();
+            var employees = _unitOfWork.Employee.GetAll()
+            .Select(e => new EmployeeVM
+            {
+                Employee = e,
+                TotalVacationDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == e.Email && u.Type == SD.Vacation).Sum(u => u.Duration), 
+                TotalRemoteDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == e.Email && u.Type == SD.Remote).Sum(u => u.Duration),
+                TotalSickDays = _unitOfWork.LeaveRequest.GetAll(u => u.EmployeeEmail == e.Email && u.Type == SD.SickLeave).Sum(u => u.Duration)
+            }).ToList();
+
             return Json(new { data = employees });
         }
 
