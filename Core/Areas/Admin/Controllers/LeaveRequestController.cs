@@ -1,7 +1,9 @@
 ﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.Models;
+using Models.ViewModels;
 using Utils;
 using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
@@ -27,24 +29,35 @@ namespace Core.Areas.Admin.Controllers
 
         public IActionResult Upsert(int? id)
         {
+            var leaveTypes = SD.LeaveTypes
+               .Select(u => new SelectListItem { Text = u, Value = u});
+
+            var leaveRequestVM = new LeaveRequestVM
+            {
+                LeaveRequest = new LeaveRequest(),
+                Types = leaveTypes
+            };
+
             if (id == null || id == 0)
             {
-                return View(new LeaveRequest());
+                return View(leaveRequestVM);
             }
             else
             {
-                LeaveRequest leaveRequest = _unitOfWork.LeaveRequest.Get(u => u.Id == id);
-                return View(leaveRequest);
+                leaveRequestVM.LeaveRequest = _unitOfWork.LeaveRequest.Get(u => u.Id == id);
+                return View(leaveRequestVM);
             }
         }
 
         [HttpPost]
-        public IActionResult Upsert(LeaveRequest leaveRequest)
+        public IActionResult Upsert(LeaveRequestVM leaveRequestVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(leaveRequest);
+                return View(leaveRequestVM);
             }
+
+            var leaveRequest = leaveRequestVM.LeaveRequest;
 
             var existingLeaveRequest = _unitOfWork.LeaveRequest
                 .Get(u => u.EmployeeEmail == leaveRequest.EmployeeEmail &&
