@@ -4,13 +4,14 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2"> @(Model.LeaveRequest.Id != 0 ? "Create" : "Update") Leave Request</h2>
+                <h2 class="text-white py-2"> @(Model.LeaveRequest.Id != 0 ? "Update" : "Create") Leave Request</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="LeaveRequest.Id" hidden />
+            <input asp-for="Types" hidden />
             <div class="row">
                 <div class="col-12">
                     <div class="border p-3">

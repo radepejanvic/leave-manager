@@ -1,11 +1,11 @@
-﻿using DataAccess.Repository.IRepository;
+﻿using Core.Services.IService;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.Models;
 using Models.ViewModels;
 using Utils;
-using static iText.StyledXmlParser.Jsoup.Select.Evaluator;
 
 namespace Core.Areas.Admin.Controllers
 {
@@ -15,11 +15,13 @@ namespace Core.Areas.Admin.Controllers
     {
         private readonly ILogger<LeaveRequestController> _logger;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILeaveRequestService _leaveRequestService;
 
-        public LeaveRequestController(ILogger<LeaveRequestController> logger, IUnitOfWork unitOfWork)
+        public LeaveRequestController(ILogger<LeaveRequestController> logger, IUnitOfWork unitOfWork, ILeaveRequestService leaveRequestService)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
+            _leaveRequestService = leaveRequestService;
         }
 
         public IActionResult Index()
@@ -59,16 +61,12 @@ namespace Core.Areas.Admin.Controllers
 
             var leaveRequest = leaveRequestVM.LeaveRequest;
 
-            var existingLeaveRequest = _unitOfWork.LeaveRequest
-                .Get(u => u.EmployeeEmail == leaveRequest.EmployeeEmail &&
-                u.Id != leaveRequest.Id && 
-                ((u.Start >= leaveRequest.Start && u.Start <= leaveRequest.End) ||
-                (u.End >= leaveRequest.Start && u.End <= leaveRequest.End))
-                );
-
-            if (existingLeaveRequest != null) { 
+            if (_leaveRequestService.IsOverlapping(leaveRequest)) { 
                 TempData["error"] = "Leave Request overlaps with the existing one.";
-                return View(leaveRequest);
+
+                leaveRequestVM.Types = SD.LeaveTypes
+                    .Select(u => new SelectListItem { Text = u, Value = u });
+                return View(leaveRequestVM);
             }
 
             if (leaveRequest.Id == 0)

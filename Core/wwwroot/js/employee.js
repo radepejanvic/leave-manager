@@ -18,7 +18,7 @@
     );
 }
 
-let table = new DataTable('#tblData', {
+var table = new DataTable('#tblData', {
     ajax: '/admin/employee/getall',
     columns: [
         {
@@ -72,7 +72,7 @@ function Delete(url) {
                 url: url,
                 type: 'DELETE',
                 success: function (data) {
-                    dataTable.ajax.reload();
+                    table.ajax.reload();
                     toastr.success(data.message);
                 }
             })

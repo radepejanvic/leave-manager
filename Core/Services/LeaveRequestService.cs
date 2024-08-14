@@ -38,11 +38,27 @@ namespace Core.Services
                     ]);
 
                 var jsonString = completion.Content[0].Text;
-                _unitOfWork.LeaveRequest.Add(JsonSerializer.Deserialize<LeaveRequest>(jsonString));
+                var leaveRequest = JsonSerializer.Deserialize<LeaveRequest>(jsonString);
+                if(!IsOverlapping(leaveRequest))
+                {
+                    _unitOfWork.LeaveRequest.Add(leaveRequest);
+                }
             }
             _unitOfWork.Save();
 
             return emails.Count();
+        }
+
+        public bool IsOverlapping(LeaveRequest leaveRequest)
+        {
+            var existingLeaveRequest = _unitOfWork.LeaveRequest
+                .Get(u => u.EmployeeEmail == leaveRequest.EmployeeEmail &&
+                u.Id != leaveRequest.Id &&
+                ((u.Start >= leaveRequest.Start && u.Start <= leaveRequest.End) ||
+                (u.End >= leaveRequest.Start && u.End <= leaveRequest.End))
+                );
+            
+            return existingLeaveRequest != null;
         }
 
         private ChatClient CreateClient()
